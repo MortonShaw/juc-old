@@ -49,6 +49,7 @@ public class T06_LockSupport {
             if (t.size() != 5) {
                 LockSupport.park();
             }
+            System.out.println("当前大小 " + t.size());
             System.out.println("t2 结束");
             LockSupport.unpark(t.t1);
         }, "t2");
