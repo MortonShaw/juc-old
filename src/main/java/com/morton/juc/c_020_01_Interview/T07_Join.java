@@ -2,7 +2,7 @@ package com.morton.juc.c_020_01_Interview;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.locks.LockSupport;
 
 /**
  * 曾经的面试题：（淘宝？）
@@ -23,10 +23,12 @@ import java.util.concurrent.CountDownLatch;
  * 当不涉及同步，只是涉及线程通信的时候，用synchronized + wait/notify就显得太重了
  * 这时应该考虑countdownlatch/cyclicbarrier/semaphore
  *
+ * join是不合适的，互相锁住
+ *
  * @author MortonShaw
  * @date 2021/7/28 22:32
  */
-public class T05_CountDownLatch {
+public class T07_Join {
 
     List<Object> lists = new ArrayList<>();
 
@@ -38,45 +40,43 @@ public class T05_CountDownLatch {
         return lists.size();
     }
 
-    public static void main(String[] args) {
-        T05_CountDownLatch t = new T05_CountDownLatch();
-        CountDownLatch latch = new CountDownLatch(1);
-        CountDownLatch latch2 = new CountDownLatch(1);
+    Thread t1 = null;
+    Thread t2 = null;
 
-        new Thread(() -> {
+
+    public static void main(String[] args) {
+        T07_Join t = new T07_Join();
+        t.t2 = new Thread(() -> {
             System.out.println("t2 启动");
             if (t.size() != 5) {
                 try {
-                    latch.await();
+                    t.t1.join();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
             System.out.println("t2 结束");
-            latch2.countDown();
-        }, "t2").start();
+            LockSupport.unpark(t.t1);
+        }, "t2");
 
-        new Thread(() -> {
+        t.t1 = new Thread(() -> {
             System.out.println("t1 启动");
             for (int i = 0; i < 10; i++) {
                 t.add(new Object());
                 System.out.println("add " + i);
                 if (t.size() == 5) {
-                    latch.countDown();
                     try {
-                        latch2.await();
+                        t.t2.join();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
-//                try {
-//                    TimeUnit.SECONDS.sleep(1);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
             }
             System.out.println("t1 结束");
-        }, "t1").start();
+        }, "t1");
+
+        t.t2.start();
+        t.t1.start();
     }
 
 

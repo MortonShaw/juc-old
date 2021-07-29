@@ -10,14 +10,14 @@ public class T11_TestSemaphore {
 
     public static void main(String[] args) {
 //        Semaphore s = new Semaphore(2);
-        Semaphore s = new Semaphore(2, true);
+        Semaphore s = new Semaphore(1, true);
 
         new Thread(() -> {
             try {
                 s.acquire();
                 System.out.println("T1 running...");
                 Thread.sleep(200);
-                System.out.println("T1 running...");
+                System.out.println("T1 end...");
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } finally {
@@ -30,7 +30,7 @@ public class T11_TestSemaphore {
                 s.acquire();
                 System.out.println("T2 running...");
                 Thread.sleep(200);
-                System.out.println("T2 running...");
+                System.out.println("T2 end...");
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } finally {
