@@ -2,6 +2,7 @@ package com.morton.juc.c_026_00_interview;
 
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.LockSupport;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -13,14 +14,10 @@ public class T99_wait {
     Lock lock = new ReentrantLock();
 
     public void m() {
-        Condition condition = lock.newCondition();
-
         lock.lock();
         try {
             System.out.println(Thread.currentThread().getName());
-            condition.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            LockSupport.park();
         } finally {
             lock.unlock();
         }
