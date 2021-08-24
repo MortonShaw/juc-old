@@ -23,6 +23,7 @@ public class T06_01_CompletableFuture {
 //        long end = System.currentTimeMillis();
 //        System.out.println("use completable future! " + (end - start));
 
+        // 创建异步执行任务
         CompletableFuture.supplyAsync(T06_01_CompletableFuture::priceOfTM)
                 .thenApply(String::valueOf)
                 .thenApply(str -> "price " + str)
