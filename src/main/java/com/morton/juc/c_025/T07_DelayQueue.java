@@ -27,12 +27,13 @@ public class T07_DelayQueue {
 
         @Override
         public int compareTo(Delayed o) {
-            if (this.getDelay(TimeUnit.MILLISECONDS) < o.getDelay(TimeUnit.MILLISECONDS))
+            if (this.getDelay(TimeUnit.MILLISECONDS) < o.getDelay(TimeUnit.MILLISECONDS)) {
                 return -1;
-            else if (this.getDelay(TimeUnit.MILLISECONDS) > o.getDelay(TimeUnit.MILLISECONDS))
+            } else if (this.getDelay(TimeUnit.MILLISECONDS) > o.getDelay(TimeUnit.MILLISECONDS)) {
                 return 1;
-            else
+            } else {
                 return 0;
+            }
         }
 
         @Override
