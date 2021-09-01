@@ -16,7 +16,7 @@ public class T06_ArrayBlockingQueue {
     static Random r = new Random();
 
     public static void main(String[] args) throws InterruptedException {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 5; i++) {
             strs.put("a" + i);
         }
 
@@ -26,6 +26,7 @@ public class T06_ArrayBlockingQueue {
         strs.offer("aaa", 1, TimeUnit.SECONDS);
 
         System.out.println(strs);
+        System.out.println(strs.size());
     }
 
 
